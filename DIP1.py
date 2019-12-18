@@ -23,9 +23,8 @@ class Censoring:
             plt.savefig(path.join('trajectories', str(fileNumber) + '.png'))
             plt.close()
 
-    def PSFsCreate(self):
+    def PSFsCreate(self, psfSize = 11):
         for x, y in self.zippedVals():
-            psfSize = 11
             psf = np.zeros((psfSize, psfSize))
             center = (psfSize - 1) / 2
             for Xi, Yi in zip(x, y):
@@ -33,7 +32,6 @@ class Censoring:
                 psfCol = round(center - Yi)
                 if psfCol < psfSize and psfRow < psfSize:
                     psf[int(psfCol), int(psfRow)] += 1
-
             self.PSFS.append(psf)
 
 
