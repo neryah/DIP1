@@ -63,9 +63,7 @@ class deblurred:
         self.W = np.zeros((256, 256)).astype(float)
 
     def calcAndPlot(self,i, p=13):
-        amp = np.abs(self.fft_box[i])
-        Wi = np.mean(amp)
-        Wi = Wi ** p
+        Wi = np.power(np.mean(np.abs(self.fft_box[i])), p)
         self.imgU += self.fft_box[i] * Wi
         self.W += Wi
         res = np.abs(fftpack.ifftn(self.imgU / self.W))
@@ -84,7 +82,8 @@ class deblurred:
 def plotPSNRS(images, originalImage):
     psnrs = []
     for fixed in images:
-        MSE = np.mean(np.power(np.abs(np.subtract(np.divide(np.array(fixed), 1000), originalImage)), 2))
+        amp = np.abs(np.subtract(np.divide(np.array(fixed), 1000), originalImage))
+        MSE = np.mean(amp ** 2)
         psnrs.append(20 * np.log10(255) - 10 * np.log10(MSE))
     plt.figure()
     plt.title('PSNR vs number of frames')
